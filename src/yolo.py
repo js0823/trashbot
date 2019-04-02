@@ -10,7 +10,7 @@ from IPython.display import display
 from seaborn import color_palette
 import cv2
 
-slim = tf.contrib.slim
+#slim = tf.contrib.slim
 
 # Configurations #
 #data_format = 'NCHW' # NHWC for gpu
