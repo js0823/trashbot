@@ -9,6 +9,8 @@ Deep learning Environment
     - opencv 3.4.2
     - numpy
     - matplotlib
+    - seaborn
+    - pillow
 
 ROS
   - Kinetic
