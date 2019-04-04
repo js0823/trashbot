@@ -5,12 +5,14 @@ Trashbot Project for COMP150: Probabilistic Robotics
 Deep learning Environment
   - Anaconda Python 3.6
   - Package dependencies:
-    - tensorflow 1.13.1
+    - tensorflow 1.12.0
     - opencv 3.4.2
     - numpy
     - matplotlib
     - seaborn
     - pillow
+
+Darknet(?)
 
 ROS
   - Kinetic
