@@ -19,7 +19,9 @@ Deep learning Environment
     - seaborn
     - pillow
 
-Darknet(?)
-
 ROS
   - Kinetic
+
+## Training Dataset
+Dataset from trashbot.
+I will be testing plastic, paper, and metal first, then expand if I have time.
