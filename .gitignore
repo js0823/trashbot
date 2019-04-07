@@ -105,3 +105,8 @@ venv.bak/
 
 # Visual Studio Code
 .vscode/
+
+# Mac OS X
+.DS_Store
+.AppleDouble
+LSOverride
