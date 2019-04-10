@@ -30,8 +30,7 @@ Building opencv 3.4.2 and contrib on Ubuntu's Anaconda environment
 3. Finally, make and install.
 
 More information are here.
-https://www.pyimagesearch.com/2018/05/28/ubuntu-18-04-how-to-install-opencv/
-https://www.pyimagesearch.com/2017/09/27/setting-up-ubuntu-16-04-cuda-gpu-for-deep-learning-with-python/
+https://dev.widemeadows.de/2017/08/23/building-opencv-for-anaconda-python-3/
 
 ## Training Dataset
 Dataset from trashbot.
