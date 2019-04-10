@@ -19,8 +19,8 @@ Deep learning Environment
     - seaborn
     - pillow
 
-ROS
-  - Kinetic
+ROS Kinetic
+  - Install ros-kinetic-desktop-full
 
 Building opencv 3.4.2 and contrib on Ubuntu's Anaconda environment
 1. Install following packages using "sudo apt install"
