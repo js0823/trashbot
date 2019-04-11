@@ -35,3 +35,6 @@ https://dev.widemeadows.de/2017/08/23/building-opencv-for-anaconda-python-3/
 ## Training Dataset
 Dataset from trashbot.
 I will be testing plastic, paper, and metal first, then expand if I have time.
+
+## darknet
+- On Geforce 1060 6GB, darknet fails when using, for example, yolov3.weights with COCO dataset pretrained on dog.jpg. The author of darknet says "Note: if error Out of memory occurs then in .cfg-file you should increase subdivisions=16, 32 or 64". This works well.
