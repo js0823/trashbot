@@ -48,3 +48,9 @@ I will be testing plastic, paper, and metal first, then expand if I have time.
 
 ## darknet
 - On Geforce 1060 6GB, darknet fails when using, for example, yolov3.weights with COCO dataset pretrained on dog.jpg. The author of darknet says "Note: if error Out of memory occurs then in .cfg-file you should increase subdivisions=16, 32 or 64". This works well.
+
+To make this work nicely on ubuntu, check the following.
+1. Run "sudo apt install libomp-dev" to make OpenMP work on darknet.
+2. Make sure opencv is built.
+3. Make sure cuda and cudann is installed.
+4. Change Makefile so that GPU=1, CUDNN=1, OPENCV=1, and OPENMP=1.
