@@ -1,6 +1,12 @@
 # Trashbot: Environmentally Friendly Robot
 Trashbot Project for COMP150: Probabilistic Robotics
 
+## Done
+1. ROS and OpenCV 3.4.6 installed on both desktop and vmware.
+2. Darknet tested on both desktop and vmware.
+3. ROS catkin_ws working as intended.
+4. All trash images annotated.
+
 ## TODO
 1. Get YOLO working and setup training data for training and testing.
 2. Get video file from turtlebot which contains trashes around the floor.
