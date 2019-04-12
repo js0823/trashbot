@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import glob, os
 
 dataset_path = '/home/js0823/github-repo/trashbot/data/images'
