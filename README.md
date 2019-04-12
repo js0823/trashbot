@@ -20,7 +20,8 @@ Deep learning Environment
     - pillow
 
 Installing ROS Kinetic using Python 3
-  - Install ros-kinetic-desktop-full
+  - Install ros-kinetic-desktop
+  - When using virtualenv, catkin_ws may run into error. If that is the case, do "pip install rospkg catkin_pkg" on virtualenv.
 
 More information here: https://ai-mrkogao.github.io/ros/ROSvirtualenv/
 
