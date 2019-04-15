@@ -58,3 +58,4 @@ To make this work nicely on ubuntu, check the following.
 ## Other comments
 1. When building Tufts turtlebot from source, it gets error message saying "move_base_msgs" is not found. Run ros-kinetic-move-base in this case.
 2. When building Tufts turtlebot from source, it gets error message "could not find em". Run "pip install empy".
+3. Install catkin command by "pip install catkin_tools"
