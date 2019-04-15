@@ -22,7 +22,7 @@
   </include>
 
   <!-- Move base -->
-  <arg name="custom_param_file" default="$(find tbot2_navigation)/param/global_costmap_params_safety.yaml"/>
+  <arg name="custom_param_file" default="$(find trashbot_navigation)/param/global_costmap_params_safety.yaml"/>
   <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml">
     <arg name="custom_param_file" value="$(arg custom_param_file)"/>
   </include>
