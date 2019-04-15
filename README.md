@@ -54,3 +54,7 @@ To make this work nicely on ubuntu, check the following.
 2. Make sure opencv is built.
 3. Make sure cuda and cudann is installed.
 4. Change Makefile so that GPU=1, CUDNN=1, OPENCV=1, and OPENMP=1.
+
+## Other comments
+1. When building Tufts turtlebot from source, it gets error message saying "move_base_msgs" is not found. Run ros-kinetic-move-base in this case.
+2. When building Tufts turtlebot from source, it gets error message "could not find em". Run "pip install empy".
