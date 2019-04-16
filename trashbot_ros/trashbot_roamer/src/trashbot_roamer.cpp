@@ -56,24 +56,16 @@ int main(int argc, char **argv)
         
         double home_location[3] = {5.65,13.8,0.0};
         
-        const int num_locations = 6;
-        double locations[num_locations][3] = { {-0.432,6.3,0.0},
-                                               {5.48,6.4,0.0},
-                                               {21.3,6.16,0.0},
-                                               {21.8,13.9,0.0},
-                                               {5.8,13.9,0.0},
-                                               {-0.444,13.8,0.0}};
+        const int num_locations = 2;
+        double locations[num_locations][3] = { {21.8,13.9,0.0},
+                                               {5.8,13.9,0.0}};
                                                
-        std::string location_names [num_locations] = {"Stairs",
-                                                      "Kitchen Right",
-                                                      "Collab Room Right",
-                                                      "Collab Room Left",
-                                                      "Kitchen Left",
-                                                      "Elevator"};
+        std::string location_names [num_locations] = {"Collab Room Left",
+                                                      "Kitchen Left"};
         
         double x1,y1,x2,y2,x3,y3,x4,y4 = 0;
         
-        int start_index = 3;
+        int start_index = 1;
         int goal_index = start_index;  
         
         while (ros::ok()) {
