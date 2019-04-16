@@ -8,6 +8,7 @@ Using Baymax 7
 2. Darknet tested on both desktop and vmware.
 3. ROS catkin_ws working as intended.
 4. All trash images annotated.
+5. Trashes trained on Darknet (Retrained to one label: Trash)
 
 ## TODO
 1. Get YOLO working and setup training data for training and testing.
@@ -50,6 +51,9 @@ I will be testing plastic, paper, and metal first, then expand if I have time.
 
 ## darknet
 - On Geforce 1060 6GB, darknet fails when using, for example, yolov3.weights with COCO dataset pretrained on dog.jpg. The author of darknet says "Note: if error Out of memory occurs then in .cfg-file you should increase subdivisions=16, 32 or 64". This works well.
+
+Training command ex: ./darknet detector train trashnet/trashnet.data trashnet/yolov3.cfg trashnet/darknet53.conv.74
+Testing command ex: ./darknet detector test trashnet/trashnet.data trashnet/yolov3.cfg backup/yolov3_6000.weights /home/js0823/github-repo/darknet/trashnet/data/images/metal146.jpg
 
 To make this work nicely on ubuntu, check the following.
 1. Run "sudo apt install libomp-dev" to make OpenMP work on darknet.
