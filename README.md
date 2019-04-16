@@ -1,6 +1,8 @@
 # Trashbot: Environmentally Friendly Robot
 Trashbot Project for COMP150: Probabilistic Robotics
 
+Using Baymax 7
+
 ## Done
 1. ROS and OpenCV 3.4.6 installed on both desktop and vmware.
 2. Darknet tested on both desktop and vmware.
