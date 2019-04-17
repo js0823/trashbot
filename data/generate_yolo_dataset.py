@@ -4,7 +4,7 @@ import glob, os
 
 dataset_path = '/home/js0823/github-repo/trashbot/data/images'
 
-percentage_test = 10
+percentage_test = 5
 
 file_train = open('train.txt', 'w')
 file_test = open('test.txt', 'w')
