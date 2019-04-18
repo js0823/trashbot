@@ -235,6 +235,7 @@ install(
   FILES_MATCHING PATTERN "*.h"
 )
 
+#[[
 # Download yolov2-tiny.weights
 #set(PATH "${CMAKE_CURRENT_SOURCE_DIR}/yolo_network_config/weights")
 #set(FILE "${PATH}/yolov2-tiny.weights")
@@ -255,7 +256,6 @@ install(
 #############
 ## Testing ##
 #############
-#[[
 if(CATKIN_ENABLE_TESTING)
   # Download yolov2.weights
   set(PATH "${CMAKE_CURRENT_SOURCE_DIR}/yolo_network_config/weights")
@@ -278,4 +278,4 @@ if(CATKIN_ENABLE_TESTING)
     ${catkin_LIBRARIES}
   )
 endif()
-#]]
+]]
