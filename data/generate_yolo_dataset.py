@@ -2,7 +2,7 @@
 
 import glob, os
 
-dataset_path = '/home/js0823/github-repo/trashbot/data/images'
+dataset_path = '/home/js0823/catkin_ws/src/trashbot/data/images'
 
 percentage_test = 5
 
