@@ -1,6 +1,7 @@
 GPU=1
 CUDNN=1
 OPENCV=1
+NUMPY=1
 OPENMP=0
 DEBUG=0
 
@@ -44,6 +45,11 @@ COMMON+= -DOPENCV
 CFLAGS+= -DOPENCV
 LDFLAGS+= `pkg-config --libs opencv` -lstdc++
 COMMON+= `pkg-config --cflags opencv` 
+endif
+
+ifeq ($(NUMPY), 1) 
+COMMON+= -DNUMPY -I/usr/include/python2.7/ -I/usr/lib/python2.7/dist-packages/numpy/core/include/numpy/
+CFLAGS+= -DNUMPY
 endif
 
 ifeq ($(GPU), 1) 

@@ -53,7 +53,7 @@ class DETECTION(Structure):
                 ("sort_class", c_int)]
 
 rospack = rospkg.RosPack()
-file_path = rospack.get_path('darknet_rospy')
+file_path = rospack.get_path('trashbot_launch')
 lib = CDLL(file_path+"/../darknet/libdarknet.so", RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]
 lib.network_width.restype = c_int
@@ -198,7 +198,8 @@ def detect_np(net, meta, np_img, thresh=.5, hier_thresh=.5, nms=.45):
     predict_image(net, im)
     dets = get_network_boxes(net, im.w, im.h, thresh, hier_thresh, None, 0, pnum)
     num = pnum[0]
-    if (nms): do_nms_obj(dets, num, meta.classes, nms);
+    if (nms):
+        do_nms_obj(dets, num, meta.classes, nms)
 
     res = []
     for j in range(num):
