@@ -27,16 +27,16 @@ class TrashbotRoamerNode:
 
     def __init__(self):
 
-        rospy.init_node('TrashbotRoamer', anonymous=True)
-        
+        rospy.init_node('trashbot_roamer', anonymous=True)
+
         file_path = rospkg.RosPack.get_path('trashbot_launch')
         net_file = file_path + rospy.get_param('~net_file', "/../darknet/cfg/yolov3.cfg")
         weights_file = file_path + rospy.get_param('~weights_file', "/../darknet/yolov3.weights")
         meta_file = file_path + rospy.get_param('~meta_file', "/../darknet/cfg/coco.data")
         names_file = file_path + rospy.get_param('~names_file', "/../darknet/data/coco.names")
-        input_image_topic = rospy.get_param('~input_image_topic', "/camera/image_color")
-        output_image_topic = rospy.get_param('~output_image_topic', "/darknet/recognition_result_image")
-        output_topic = rospy.get_param('~output_topic', "/darknet/recognition_result")
+        input_image_topic = rospy.get_param('~input_image_topic', "/camera/rgb/image_raw")
+        output_image_topic = rospy.get_param('~output_image_topic', "/camera/rgb/yolo_image_output")
+        output_topic = rospy.get_param('~output_topic', "/yolo/recognition_result")
         cropping_area = rospy.get_param('~cropping_area', None)
 
         if cropping_area is not None:
