@@ -55,7 +55,7 @@ class TrashbotRoamerNode:
         self.bridge = CvBridge()
         self.image_sub = rospy.Subscriber(input_image_topic, Image, self.image_callback, queue_size=1, buff_size=2**24)
         self.result_image_pub = rospy.Publisher(output_image_topic, Image, queue_size=1)
-        self.result_pub = rospy.Publisher(output_topic, DarkBoxArray, queue_size=1)
+        self.result_pub = rospy.Publisher(output_topic, YoloBoxes, queue_size=1)
 
         self.color = (0,255,0)
         rospy.loginfo("Initialized TrashbotRoamerNode")
@@ -71,8 +71,8 @@ class TrashbotRoamerNode:
 
         # cv_image = cv2.resize(cv_image, None, fx=0.5, fy=0.5)
 
-        darkbox_array = DarkBoxArray()
-        darkbox_list = []
+        yolo_boxes = YoloBoxes()
+        yolobox_list = []
 
         cv_image_ = copy.deepcopy(cv_image)
         
@@ -93,13 +93,13 @@ class TrashbotRoamerNode:
                 ymin += self.cropping_area[0]
                 ymax += self.cropping_area[0]
 
-            darkbox = YoloBox()
-            darkbox.probability = probability
-            darkbox.label = label
-            darkbox.xmin = xmin
-            darkbox.ymin = ymin
-            darkbox.xmax = xmax
-            darkbox.ymax = ymax
+            yolobox = YoloBox()
+            yolobox.probability = probability
+            yolobox.label = label
+            yolobox.xmin = xmin
+            yolobox.ymin = ymin
+            yolobox.xmax = xmax
+            yolobox.ymax = ymax
 
             pt1 = (xmin, ymin)
             pt2 = (xmax, ymax)
@@ -107,11 +107,11 @@ class TrashbotRoamerNode:
             cv2.putText(cv_image_, label + " [" + str(probability*100) + "%]",
                         (pt1[0]+2, pt1[1]+25), cv2.FONT_HERSHEY_SIMPLEX, 0.8, self.color, 3)
 
-            darkbox_list.append(darkbox)
+            yolobox_list.append(yolobox)
 
-        darkbox_array.dark_array = darkbox_list
+        yolo_boxes.dark_array = yolobox_list
         self.result_image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image_, "bgr8"))
-        self.result_pub.publish(darkbox_array)
+        self.result_pub.publish(yolo_boxes)
 
 
 if __name__ == "__main__":
