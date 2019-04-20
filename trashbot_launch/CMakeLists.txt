@@ -9,6 +9,14 @@ project(trashbot_launch)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roslaunch
+  actionlib
+  actionlib_msgs
+  move_base_msgs
+  roscpp
+  rospy
+  tf
+  message_generation
+  sound_play
 )
 
 ## System dependencies are found with CMake's conventions
@@ -142,6 +150,10 @@ include_directories(
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+add_executable(trashbot_roamer src/trashbot_roamer.cpp)
+add_dependencies(trashbot_roamer  ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(trashbot_roamer ${catkin_LIBRARIES})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
