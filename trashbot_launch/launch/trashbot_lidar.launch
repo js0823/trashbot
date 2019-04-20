@@ -25,5 +25,29 @@
 	<!-- launch logging -->
 	<include file="$(find trashbot_launch)/launch/logging.launch">
 	</include>
+
+	<!-- YOLO launch -->
+	<!-- Config and weights folder. -->
+	<arg name="yolo_weights_path" default="$(find trashbot_launch)/yolo_configs/weights"/>
+	<arg name="yolo_config_path" default="$(find trashbot_launch)/yolo_configs/cfg"/>
+	
+	<arg name="net_file" default="$(find trashbot_launch)/yolo_configs/cfg/yolov3.cfg" />
+  	<arg name="weights_file" default="$(find trashbot_launch)/yolo_configs/weights/yolov3.weights" />
+  	<arg name="meta_file" default="$(find trashbot_launch)/yolo_configs/cfg/coco.data" />
+  	<arg name="names_file" default="$(find trashbot_launch)/yolo_configs/cfg/coco.names" />
+
+	<!-- ROS and network parameter files -->
+	<arg name="ros_param_file" default="$(find trashbot_launch)/config/ros.yaml"/>
+	<arg name="network_param_file" default="$(find trashbot_launch)/config/yolov2-tiny.yaml"/>
+
+	<!-- Load parameters -->
+	<rosparam command="load" ns="trashbot_launch" file="$(arg ros_param_file)"/>
+	<rosparam command="load" ns="trashbot_launch" file="$(arg network_param_file)"/>
+
+	<!-- Start darknet and ros wrapper -->
+	<node pkg="trashbot_launch" type="trashbot_launch" name="trashbot_launch" output="screen" launch-prefix="$(arg launch_prefix)">
+		<param name="weights_path" value="$(arg yolo_weights_path)" />
+		<param name="config_path" value="$(arg yolo_config_path)" />
+	</node>
 	
 </launch>
