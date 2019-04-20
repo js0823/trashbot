@@ -111,7 +111,7 @@ catkin_package(
 #  LIBRARIES darknet_ros_msgs
   CATKIN_DEPENDS 
     geometry_msgs 
-    message_generation 
+    message_runtime 
     sensor_msgs 
     std_msgs
     actionlib_msgs
