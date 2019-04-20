@@ -1,3 +1,6 @@
+This is code taken from https://github.com/pjreddie/darknet.
+I did not write this code and no credits goes towards me on this code.
+
 ![Darknet Logo](http://pjreddie.com/media/files/darknet-black-small.png)
 
 # Darknet #
