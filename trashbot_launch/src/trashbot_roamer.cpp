@@ -22,7 +22,6 @@ void sleepok(int t, ros::NodeHandle &nh)
 
 int move_turtle_bot (double x, double y, double yaw)
 {
-        
         actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> ac("move_base",true);
         ac.waitForServer(); //wait to make sure the service is there -- tihs has to be here even if the service is already running
         move_base_msgs::MoveBaseGoal goal;
@@ -92,5 +91,4 @@ int main(int argc, char **argv)
         }
         
         return 0;
-
 }

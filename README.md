@@ -28,12 +28,6 @@ Deep learning Environment
     - seaborn
     - pillow
 
-Installing ROS Kinetic using Python 3
-  - Install ros-kinetic-desktop
-  - When using virtualenv, catkin_ws may run into error. If that is the case, do "pip install rospkg catkin_pkg" on virtualenv.
-
-More information here: https://ai-mrkogao.github.io/ros/ROSvirtualenv/
-
 Building opencv 3.4.6 using Python 3 and virtual environment
 1. Install following packages using "sudo apt install"
   - build-essential cmake unzip pkg-config liblapacke-dev libjpeg-dev libpng-dev libtiff-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libgtk-3-dev libatlas-base-dev gfortran libtiff5-dev libjasper-dev libpng12-dev libhdf5-serial-dev graphviz libopenblas-dev python-tk python3-tk python-imaging-tk
@@ -67,3 +61,5 @@ To make this work nicely on ubuntu, check the following.
 2. When building Tufts turtlebot from source, it gets error message "could not find em". Run "pip install empy".
 3. Install catkin command by "pip install catkin_tools"
 4. To record video, follow https://learn.turtlebot.com/2015/02/04/4/
+5. Must manually install turtlebot via "sudo apt install ros-kinetic-turtlebot"
+6. Must manually install turtlebot rviz launchers via "sudo apt install ros-kinetic-turtlebot-rviz-launchers"
