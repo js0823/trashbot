@@ -4,7 +4,7 @@ import rospkg
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 
-# import sys
+import sys
 # sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
 
 from ctypes import *
@@ -30,10 +30,10 @@ class TrashbotRoamerNode:
         rospy.init_node('trashbot_roamer', anonymous=True)
 
         file_path = rospkg.RosPack.get_path('trashbot_launch')
-        net_file = file_path + rospy.get_param('~net_file', "/../darknet/cfg/yolov3.cfg")
-        weights_file = file_path + rospy.get_param('~weights_file', "/../darknet/yolov3.weights")
-        meta_file = file_path + rospy.get_param('~meta_file', "/../darknet/cfg/coco.data")
-        names_file = file_path + rospy.get_param('~names_file', "/../darknet/data/coco.names")
+        net_file = file_path + rospy.get_param('~net_file', "/../darknet_network_config/cfg/yolov3-tiny.cfg")
+        weights_file = file_path + rospy.get_param('~weights_file', "/../darknet_network_config/weights/yolov3-tiny_50000.weights")
+        meta_file = file_path + rospy.get_param('~meta_file', "/../darknet_network_config/cfg/trashnet.data")
+        names_file = file_path + rospy.get_param('~names_file', "/../darknet_network_config/cfg/trashnet.names")
         input_image_topic = rospy.get_param('~input_image_topic', "/camera/rgb/image_raw")
         output_image_topic = rospy.get_param('~output_image_topic', "/camera/rgb/yolo_image_output")
         output_topic = rospy.get_param('~output_topic', "/yolo/recognition_result")
