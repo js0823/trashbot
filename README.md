@@ -63,3 +63,4 @@ To make this work nicely on ubuntu, check the following.
 4. To record video, follow https://learn.turtlebot.com/2015/02/04/4/
 5. Must manually install turtlebot via "sudo apt install ros-kinetic-turtlebot"
 6. Must manually install turtlebot rviz launchers via "sudo apt install ros-kinetic-turtlebot-rviz-launchers"
+7. Must manually install turtlebot navigation via "sudo apt install ros-kinetic-turtlebot-navigation"
