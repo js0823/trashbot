@@ -1,5 +1,5 @@
 classes = 1
 train = /home/js0823/catkin_ws/src/trashbot/data/train.txt
 valid = /home/js0823/catkin_ws/src/trashbot/data/test.txt
-names = /home/js0823/github-repo/darknet/trashnet/trashnet.names
+names = /home/js0823/catkin_ws/src/trashbot/darknet_network_config/cfg/trashnet.names
 backup = /home/js0823/github-repo/darknet/backup/

@@ -27,9 +27,9 @@ class TrashbotRoamerNode:
 
     def __init__(self):
 
-        rospy.init_node('trashbot_roamer', anonymous=True)
-
-        file_path = rospkg.RosPack.get_path('trashbot_launch')
+        rospy.init_node('yolo_detector', anonymous=True)
+        rospack = rospkg.RosPack()
+        file_path = rospack.get_path('trashbot_launch')
         net_file = file_path + rospy.get_param('~net_file', "/../darknet_network_config/cfg/yolov3-tiny.cfg")
         weights_file = file_path + rospy.get_param('~weights_file', "/../darknet_network_config/weights/yolov3-tiny_50000.weights")
         meta_file = file_path + rospy.get_param('~meta_file', "/../darknet_network_config/cfg/trashnet.data")
@@ -58,12 +58,13 @@ class TrashbotRoamerNode:
         self.result_pub = rospy.Publisher(output_topic, YoloBoxes, queue_size=1)
 
         self.color = (0,255,0)
-        rospy.loginfo("Initialized TrashbotRoamerNode")
+        rospy.loginfo("Initialized yolo_detector_node")
 
     def image_callback(self, data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
             self.darknet_detection(cv_image)
+            print("callback done.")
         except CvBridgeError as e:
             print(e)
 
@@ -109,15 +110,13 @@ class TrashbotRoamerNode:
 
             yolobox_list.append(yolobox)
 
-        yolo_boxes.dark_array = yolobox_list
+        yolo_boxes.yolo_boxes = yolobox_list
         self.result_image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image_, "bgr8"))
         self.result_pub.publish(yolo_boxes)
 
-
 if __name__ == "__main__":
-
-    TrashbotRoamerNode()
     try:
+        TrashbotRoamerNode()
         rospy.spin()
     except KeyboardInterrupt:
          print("Shutting down")
