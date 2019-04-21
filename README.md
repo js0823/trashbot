@@ -56,6 +56,17 @@ To make this work nicely on ubuntu, check the following.
 3. Make sure cuda and cudann is installed.
 4. Change Makefile so that GPU=1, CUDNN=1, OPENCV=1, and OPENMP=1.
 
+## Running the whole thing
+1. Build darknet.
+2. catkin_make the trashbot.
+3. Make sure devel.bash is sourced.
+4. Run "roslaunch trashbot_launch trashbot_lidar.launch"
+5. Run "roslaunch amcl_navigation.launch"
+6. Run "roslaunch trashbot_roamer.launch"
+7. Run "roslaunch yolo_detector.launch"
+
+Note: I should merge trashbot_roamer and yolo_detector into one file.
+
 ## Other comments
 1. When building Tufts turtlebot from source, it gets error message saying "move_base_msgs" is not found. Run ros-kinetic-move-base in this case.
 2. When building Tufts turtlebot from source, it gets error message "could not find em". Run "pip install empy".
