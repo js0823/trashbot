@@ -10,7 +10,7 @@
     <arg name="meta_file" default="/../darknet_network_config/cfg/trashnet.data" />
     <arg name="names_file" default="/../darknet_network_config/cfg/trashnet.names" />
   
-    <node pkg="trashbot_launch/src" type="yolo_detector.py" name="yolo_detector" output="screen">
+    <node pkg="trashbot_launch" type="yolo_detector.py" name="yolo_detector" output="screen">
         <param name="net_file" type="str" value="$(arg net_file)" />
         <param name="weights_file" type="str" value="$(arg weights_file)" />
         <param name="names_file" type="str" value="$(arg names_file)" />

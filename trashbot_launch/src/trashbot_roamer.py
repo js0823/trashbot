@@ -19,7 +19,8 @@ def move_turtlebot(x, y, yaw):
     goal.target_pose.pose.position.x = x
     goal.target_pose.pose.position.y = y
     goal.target_pose.pose.position.z = 0.0
-    goal.target_pose.pose.orientation = tf.createQuaternionMsgFromYaw(yaw)
+    #goal.target_pose.pose.orientation = tf.createQuaternionMsgFromYaw(yaw)
+    goal.target_pose.pose.orientation = tf.transformations.quaternion_from_euler(0, 0, yaw)
 
     client.send_goal(goal)
     wait = client.wait_for_result()

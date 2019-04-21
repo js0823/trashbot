@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="trashbot_launch" type="trashbot_roamer.py" name="trashbot_roamer" output="screen">
+    </node>
+</launch>
