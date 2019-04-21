@@ -41,9 +41,9 @@ if __name__ == '__main__':
         home_location = [5.65, 13.8, 0.0]
 
         num_locations = 2
-        locations = [[5.8,13.9,0.0], [21.8,13.9,0.0]]
+        locations = [[21.8,13.9,0.0], [5.8,13.9,0.0]]
 
-        location_names = ["Kitchen Left", "Collab Room Left"]
+        location_names = ["Collab Room Left", "Kitchen Left"]
         x1 = y1 = x2 = y2 = x3 = y3 = x4 = y4 = 0
         start_index = 1
         goal_index = start_index
@@ -51,8 +51,7 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             print("Target Location : {}".format(location_names[goal_index]))
             for p in range(3):
-                result = move_turtlebot(locations[goal_index][0], locations[goal_index][1], 
-                                locations[goal_index][2] + (p + 1) * PI / 2)
+                result = move_turtlebot(locations[goal_index][0], locations[goal_index][1], locations[goal_index][2] + (p + 1) * PI / 2)
             if result:
                 rospy.loginfo("Goal execution done.")
             goal_index += 1
