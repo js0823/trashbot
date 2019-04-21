@@ -3,6 +3,7 @@
 import rospy
 import actionlib
 import tf
+import geometry_msgs.msg._Quaternion
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 
 PI = 3.14159265359
@@ -20,7 +21,11 @@ def move_turtlebot(x, y, yaw):
     goal.target_pose.pose.position.y = y
     goal.target_pose.pose.position.z = 0.0
     #goal.target_pose.pose.orientation = tf.createQuaternionMsgFromYaw(yaw)
-    goal.target_pose.pose.orientation = tf.transformations.quaternion_from_euler(0, 0, yaw)
+    quat = tf.transformations.quaternion_from_euler(0, 0, yaw)
+    goal.target_pose.pose.orientation.x = quat[0]
+    goal.target_pose.pose.orientation.y = quat[1]
+    goal.target_pose.pose.orientation.z = quat[2]
+    goal.target_pose.pose.orientation.w = quat[3]
 
     client.send_goal(goal)
     wait = client.wait_for_result()
