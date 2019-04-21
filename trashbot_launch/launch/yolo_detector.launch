@@ -19,4 +19,5 @@
         <param name="output_image_topic" type="str" value="$(arg output_image_topic)" />
         <param name="output_topic" type="str" value="$(arg output_topic)" />
     </node>
+    
 </launch>

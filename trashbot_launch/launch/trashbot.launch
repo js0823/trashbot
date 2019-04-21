@@ -5,7 +5,6 @@
 		<!-- any potential arguments go here; need to check if 3D goes on by default or not -->	
 	</include>
 
-
 	<!-- launch 3D sensor -->
 	<include file="$(find trashbot_launch)/launch/3dsensor.launch">
 		<arg name="scan_topic" default="scan"/>
