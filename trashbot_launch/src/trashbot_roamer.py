@@ -3,8 +3,9 @@
 import rospy
 import actionlib
 import tf
-import geometry_msgs.msg._Quaternion
+import geometry_msgs.msg
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+import tf_conversions
 
 PI = 3.14159265359
 
@@ -21,11 +22,14 @@ def move_turtlebot(x, y, yaw):
     goal.target_pose.pose.position.y = y
     goal.target_pose.pose.position.z = 0.0
     #goal.target_pose.pose.orientation = tf.createQuaternionMsgFromYaw(yaw)
-    quat = tf.transformations.quaternion_from_euler(0, 0, yaw)
-    goal.target_pose.pose.orientation.x = quat[0]
-    goal.target_pose.pose.orientation.y = quat[1]
-    goal.target_pose.pose.orientation.z = quat[2]
-    goal.target_pose.pose.orientation.w = quat[3]
+    #quat = tf.transformations.quaternion_from_euler(0, 0, yaw)
+    #goal.target_pose.pose.orientation.x = quat[0]
+    #goal.target_pose.pose.orientation.y = quat[1]
+    #goal.target_pose.pose.orientation.z = quat[2]
+    #goal.target_pose.pose.orientation.w = quat[3]
+
+    goal.target_pose.pose.orientation = geometry_msgs.msg.Quaternion(
+                                *tf_conversions.transformations.quaternion_from_euler(0, 0, yaw))
 
     client.send_goal(goal)
     wait = client.wait_for_result()
@@ -37,7 +41,7 @@ def move_turtlebot(x, y, yaw):
 
 if __name__ == '__main__':
     try:
-        rospy.init_node('move_turtlebot_py')
+        rospy.init_node('trashbot_roamer_py')
         home_location = [5.65, 13.8, 0.0]
 
         num_locations = 2

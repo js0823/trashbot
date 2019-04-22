@@ -18,14 +18,16 @@ import shutil
 import copy
 # import argparse
 
-from trashbot_launch.src.darknetv2 import *
+from darknet import *
 from yolo_ros_msgs.msg import YoloBox
 from yolo_ros_msgs.msg import YoloBoxes
 
 
-class YoloDetectorNode:
+class TrashbotRoamerNode:
+
     def __init__(self):
-        rospy.init_node('YoloDetectorNode')
+
+        rospy.init_node('yolo_detector', anonymous=True)
         rospack = rospkg.RosPack()
         file_path = rospack.get_path('trashbot_launch')
         net_file = file_path + rospy.get_param('~net_file', "/../darknet_network_config/cfg/yolov3-tiny.cfg")
@@ -35,6 +37,11 @@ class YoloDetectorNode:
         input_image_topic = rospy.get_param('~input_image_topic', "/camera/rgb/image_raw")
         output_image_topic = rospy.get_param('~output_image_topic', "/camera/rgb/yolo_image_output")
         output_topic = rospy.get_param('~output_topic', "/yolo/recognition_result")
+        cropping_area = rospy.get_param('~cropping_area', None)
+
+        if cropping_area is not None:
+            cropping_area = [[int(x) for x in ss.lstrip('[').split(' ')][0] for ss in cropping_area.rstrip(']').split(',')]
+        self.cropping_area = cropping_area
 
         if os.path.isdir('data'):
             shutil.rmtree('data')
@@ -69,13 +76,23 @@ class YoloDetectorNode:
         yolobox_list = []
 
         cv_image_ = copy.deepcopy(cv_image)
+        
+        if self.cropping_area is not None:
+            cv_image = cv_image[self.cropping_area[0]:self.cropping_area[1],
+                                self.cropping_area[2]:self.cropping_area[3]]
 
-        r = detect(self.net, self.meta, cv_image)
+        r = detect_np(self.net, self.meta, cv_image)
         for i in r:
             x, y, w, h = i[2][0], i[2][1], i[2][2], i[2][3]
             xmin, ymin, xmax, ymax = convertBack(float(x), float(y), float(w), float(h))
             probability = round(i[1], 4)
             label = i[0].decode()
+
+            if self.cropping_area is not None:
+                xmin += self.cropping_area[2]
+                xmax += self.cropping_area[2]
+                ymin += self.cropping_area[0]
+                ymax += self.cropping_area[0]
 
             yolobox = YoloBox()
             yolobox.probability = probability
@@ -99,7 +116,7 @@ class YoloDetectorNode:
 
 if __name__ == "__main__":
     try:
-        YoloDetectorNode()
+        TrashbotRoamerNode()
         rospy.spin()
     except KeyboardInterrupt:
          print("Shutting down")
