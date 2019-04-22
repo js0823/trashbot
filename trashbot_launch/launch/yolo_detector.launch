@@ -3,7 +3,7 @@
     <!-- Config and weights folder. -->
     <arg name="input_image_topic" default="/camera/rgb/image_raw" />
     <arg name="output_image_topic" default="/camera/rgb/yolo_image_output" />
-    <arg name="output_topic" default="/yolo/recognition_result" />
+    <arg name="output_topic" default="/yolo/result" />
 
     <arg name="net_file" default="/../darknet_network_config/cfg/yolov3-tiny.cfg" />
     <arg name="weights_file" default="/../darknet_network_config/weights/yolov3-tiny_50000.weights" />

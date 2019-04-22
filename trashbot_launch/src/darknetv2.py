@@ -1,3 +1,6 @@
+import rospy
+import rospkg
+
 from ctypes import *
 import math
 import random
@@ -42,10 +45,11 @@ class METADATA(Structure):
     _fields_ = [("classes", c_int),
                 ("names", POINTER(c_char_p))]
 
-    
-
 #lib = CDLL("/home/pjreddie/documents/darknet/libdarknet.so", RTLD_GLOBAL)
-lib = CDLL("libdarknet.so", RTLD_GLOBAL)
+
+rospack = rospkg.RosPack()
+file_path = rospack.get_path('trashbot_launch')
+lib = CDLL(file_path + "/../darknet/libdarknet.so", RTLD_GLOBAL)
 lib.network_width.argtypes = [c_void_p]
 lib.network_width.restype = c_int
 lib.network_height.argtypes = [c_void_p]
