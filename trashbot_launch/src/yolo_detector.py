@@ -22,6 +22,9 @@ from darknetv2 import *
 from yolo_ros_msgs.msg import YoloBox
 from yolo_ros_msgs.msg import YoloBoxes
 
+# sound_play
+from sound_play.msg import SoundRequest
+from sound_play.libsoundplay import SoundClient
 
 class YoloDetectorNode:
     def __init__(self):
@@ -51,13 +54,20 @@ class YoloDetectorNode:
         self.result_pub = rospy.Publisher(output_topic, YoloBoxes, queue_size=1)
 
         self.color = (0,255,0)
+
+        # sound_play
+        self.soundhandle = SoundClient()
+        self.voice = 'voice_kal_diphone'
+        self.volume = 1.0
+
         rospy.loginfo("Initialized yolo_detector_node")
 
     def image_callback(self, data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-            self.darknet_detection(cv_image)
-            print("callback done.")
+            detect = self.darknet_detection(cv_image)
+            if detect == True:
+                self.soundhandle.say('Trash Detected. Please pick it up.', self.voice, self.volume)
         except CvBridgeError as e:
             print(e)
 
@@ -96,6 +106,11 @@ class YoloDetectorNode:
         yolo_boxes.yolo_boxes = yolobox_list
         self.result_image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image_, "bgr8"))
         self.result_pub.publish(yolo_boxes)
+
+        if r == []:
+            return False
+        else:
+            return True
 
 if __name__ == "__main__":
     try:
