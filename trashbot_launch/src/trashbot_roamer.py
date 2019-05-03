@@ -6,6 +6,7 @@ import tf
 import geometry_msgs.msg
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import tf_conversions
+import time
 
 PI = 3.14159265359
 
@@ -54,8 +55,11 @@ if __name__ == '__main__':
 
         while not rospy.is_shutdown():
             print("Target Location : {}".format(location_names[goal_index]))
+            # Move to location
+            result = move_turtlebot(locations[goal_index][0],locations[goal_index][1],locations[goal_index][2])
+            # Rotate around
             for p in range(3):
-                result = move_turtlebot(locations[goal_index][0], locations[goal_index][1], locations[goal_index][2] + (p + 1) * PI / 2)
+                result = move_turtlebot(locations[goal_index][0], locations[goal_index][1], locations[goal_index][2]+(p+1)*PI/2)
             if result:
                 rospy.loginfo("Goal execution done.")
             goal_index += 1
