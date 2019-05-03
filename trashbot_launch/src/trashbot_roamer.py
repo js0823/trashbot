@@ -62,6 +62,7 @@ if __name__ == '__main__':
                 result = move_turtlebot(locations[goal_index][0], locations[goal_index][1], locations[goal_index][2]+(p+1)*PI/2)
             if result:
                 rospy.loginfo("Goal execution done.")
+            rospy.sleep(10)
             goal_index += 1
             if goal_index >= num_locations:
                 goal_index = 0
