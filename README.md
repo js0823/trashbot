@@ -3,19 +3,11 @@ Trashbot Project for COMP150: Probabilistic Robotics
 
 Using Baymax 7
 
-## Done
-1. ROS and OpenCV 3.4.6 installed on both desktop and vmware.
-2. Darknet tested on both desktop and vmware.
-3. ROS catkin_ws working as intended.
-4. All trash images annotated.
-5. Trashes trained on Darknet (Retrained to one label: Trash)
-6. YOLO trained and tested on dataset. Results are good on both normal and tiny YOLO weights.
-7. YOLO tested on real video. The results are bad...
-
 ## TODO
-1. Get video file from turtlebot which contains trashes around the floor.
-2. Test on the video file and tune YOLO as needed.
-3. Write code for the turtlebot to move towards the trash when detected and voice out.
+1. YOLO is very slow on turtlebot laptops (can't do much about it?)
+2. Use lidar to get close to the trash (or use cv2 to calculate rectangle area?)
+3. Test the sound_play feature when trash is detected.
+4. My trashbot_lidar.launch gives error launching lidar. I can use trashbot_lidar.launch in this case but they are the same...
 
 ## Environments
 Deep learning Environment
