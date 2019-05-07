@@ -18,7 +18,7 @@ import shutil
 import copy
 # import argparse
 
-from darknetv2 import *
+from darknet import *
 from yolo_ros_msgs.msg import YoloBox
 from yolo_ros_msgs.msg import YoloBoxes
 
@@ -66,6 +66,7 @@ class YoloDetectorNode:
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
             detect = self.darknet_detection(cv_image)
+            self.darknet_detection(cv_image)
             if detect == True:
                 self.soundhandle.say('Trash Detected. Please pick it up.', self.voice, self.volume)
         except CvBridgeError as e:
@@ -80,7 +81,7 @@ class YoloDetectorNode:
 
         cv_image_ = copy.deepcopy(cv_image)
 
-        r = detect(self.net, self.meta, cv_image)
+        r = detect_np(self.net, self.meta, cv_image)
         for i in r:
             x, y, w, h = i[2][0], i[2][1], i[2][2], i[2][3]
             xmin, ymin, xmax, ymax = convertBack(float(x), float(y), float(w), float(h))
@@ -107,10 +108,16 @@ class YoloDetectorNode:
         self.result_image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image_, "bgr8"))
         self.result_pub.publish(yolo_boxes)
 
+        # r returns [] or 
+        # [('trash', 0.999128812, (338.6744689, 394.390777587, 31.8570632, 85.84305572))]
+        # where 'trash' is label, 0.999128812 is confidence level. Rest looks like box size.
+
         if r == []:
             return False
+        elif r[0][1] > 0.7:
+            return True 
         else:
-            return True
+            return False
 
 if __name__ == "__main__":
     try:
