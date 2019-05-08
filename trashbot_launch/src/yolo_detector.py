@@ -59,14 +59,17 @@ class YoloDetectorNode:
         self.soundhandle = SoundClient()
         self.voice = 'voice_kal_diphone'
         self.volume = 1.0
+        
+        # detection initialized
+        self.detect = []
 
         rospy.loginfo("Initialized yolo_detector_node")
 
     def image_callback(self, data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-            detect = self.darknet_detection(cv_image)
-            if detect and detect[0][1] > 0.7:
+            self.detect = self.darknet_detection(cv_image)
+            if self.detect and self.detect[0][1] > 0.85:
                 self.soundhandle.say('Trash Detected. Please pick it up.', self.voice, self.volume)
         except CvBridgeError as e:
             print(e)
@@ -106,6 +109,9 @@ class YoloDetectorNode:
         yolo_boxes.yolo_boxes = yolobox_list
         self.result_image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image_, "bgr8"))
         self.result_pub.publish(yolo_boxes)
+
+        print('yolobox_list = {}'.format(yolobox_list))
+        print('yolo_boxes = {}'.format(yolo_boxes))
 
         # r returns [] or 
         # [('trash', 0.999128812, (338.6744689, 394.390777587, 31.8570632, 85.84305572))]
