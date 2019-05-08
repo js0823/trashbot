@@ -5,13 +5,10 @@ Using Baymax 7
 
 ## TODO
 1. YOLO is very slow on turtlebot laptops (can't do much about it?)
-2. Use lidar to get close to the trash (or use cv2 to calculate rectangle area?)
-3. Test the sound_play feature when trash is detected.
-4. My trashbot_lidar.launch gives error launching lidar. I can use trashbot_lidar.launch in this case but they are the same...
+2. Moving close to trash using pointcloud/depthcloud.
 
 ## Environments
 Deep learning Environment
-  - Anaconda Python 3.6
   - Package dependencies:
     - tensorflow 1.12.0
     - opencv 3.4.2
