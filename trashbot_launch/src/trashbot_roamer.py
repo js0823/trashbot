@@ -8,8 +8,16 @@ from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import tf_conversions
 import time
 import yolo_detector
+from yolo_ros_msgs.msg import YoloBox
+from yolo_ros_msgs.msg import YoloBoxes
 
 PI = 3.14159265359
+
+def yolo_callback(yolo_boxes):
+    if not yolo_boxes:
+        return []
+    else:
+        pass
 
 def move_turtlebot(x, y, yaw):
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
@@ -38,6 +46,11 @@ def move_turtlebot(x, y, yaw):
 if __name__ == '__main__':
     try:
         rospy.init_node('trashbot_roamer_py')
+
+        # subscribe to yolo publisher
+        input_topic = rospy.get_param('~input_topic', "/yolo/result")
+        yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
+
         home_location = [5.65, 13.8, 0.0]
 
         num_locations = 2
@@ -52,6 +65,10 @@ if __name__ == '__main__':
         trash_location = []
 
         while not rospy.is_shutdown():
+
+            # If trash is found and trash_location is empty, add the location
+            
+
             if not trash_location: # No trash found
                 print("Target Location : {}".format(location_names[goal_index]))
                 # Move to location

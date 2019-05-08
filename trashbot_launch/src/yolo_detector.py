@@ -3,6 +3,7 @@ import rospy
 import rospkg
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
+import re
 
 import sys
 # sys.path.remove('/opt/ros/kinetic/lib/python2.7/dist-packages')
@@ -37,7 +38,7 @@ class YoloDetectorNode:
         names_file = file_path + rospy.get_param('~names_file', "/../darknet_network_config/cfg/trashnet.names")
         input_image_topic = rospy.get_param('~input_image_topic', "/camera/rgb/image_raw")
         output_image_topic = rospy.get_param('~output_image_topic', "/camera/rgb/yolo_image_output")
-        output_topic = rospy.get_param('~output_topic', "/yolo/recognition_result")
+        output_topic = rospy.get_param('~output_topic', "/yolo/result")
 
         if os.path.isdir('data'):
             shutil.rmtree('data')
@@ -69,7 +70,7 @@ class YoloDetectorNode:
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
             self.detect = self.darknet_detection(cv_image)
-            if self.detect and self.detect[0][1] > 0.85:
+            if self.detect and self.detect[0][1] > 0.5:
                 self.soundhandle.say('Trash Detected. Please pick it up.', self.voice, self.volume)
         except CvBridgeError as e:
             print(e)
@@ -112,15 +113,22 @@ class YoloDetectorNode:
         self.result_image_pub.publish(self.bridge.cv2_to_imgmsg(cv_image_, "bgr8"))
         self.result_pub.publish(yolo_boxes)
 
-        print('yolobox_list = {}'.format(yolobox_list))
-        print('yolo_boxes = {}'.format(yolo_boxes))
-        print('r = {}'.format(r))
-        print('xmin, ymin = {}'.format(pt1))
-        print('xmax, ymax = {}'.format(pt2))
+        # yolo_boxes.yolo_boxes[0] = all the results
+        # label !!python/unicode "trash"\nprobability 0.9996
+        # xmin: 300
+        # xmax: 326
+        # ymin: 324
+        # ymax: 406
+        s = str(yolo_boxes.yolo_boxes[0])
+        ss = re.findall(r"[-+]?\d*\.\d+|\d+", s)
+        # ss = ['0.9996', '300', '326', '324', '406']
 
         # r returns [] or 
-        # [('trash', 0.999128812, (338.6744689, 394.390777587, 31.8570632, 85.84305572))]
-        # where 'trash' is label, 0.999128812 is confidence level. Rest looks like box size.
+        # [('trash', 0.9996, (312.81, 365.2218, 26.248, 81.764))]
+        # where 'trash' is label, 0.999128812 is confidence level.
+        # pt1 = xmin, ymin = (300, 324)
+        # pt2 = xmax, ymax = (326, 406)
+        # yolo_boxes = label: trash, probability: 0.9996, 300, 326, 324, 406 ...
 
         return r
 
