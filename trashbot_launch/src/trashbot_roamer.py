@@ -48,8 +48,7 @@ if __name__ == '__main__':
         start_index = 1
         goal_index = start_index
 
-        # Trash locations
-        num_trash_location = 1
+        # Trash location
         trash_location = []
 
         while not rospy.is_shutdown():
@@ -68,18 +67,20 @@ if __name__ == '__main__':
                 goal_index += 1
                 if goal_index >= num_locations:
                     goal_index = 0
-            else:
+            else: # trash found. Go here first.
                 print("Going to trash.")
                 # Move to location
-                result = move_turtlebot(trash_location[goal_index][0],
-                                        trash_location[goal_index][1], trash_location[goal_index][2])
+                result = move_turtlebot(trash_location[0][0],
+                                        trash_location[0][1], trash_location[0][2])
                 # Rotate around
                 for p in range(3):
-                    result = move_turtlebot(trash_location[goal_index][0], trash_location[goal_index][1], 
-                                            trash_location[goal_index][2]+(p+1)*PI/2)
+                    result = move_turtlebot(trash_location[0][0], trash_location[0][1], 
+                                            trash_location[0][2]+(p+1)*PI/2)
                 if result:
                     rospy.loginfo("Going to trash: done.")
                 rospy.sleep(10)
+                # Remove trash location
+                trash_location[:] = []
 
     except rospy.ROSInternalException:
         rospy.loginfo("Roamer finished.")
