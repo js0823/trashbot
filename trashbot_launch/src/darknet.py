@@ -10,7 +10,6 @@ import colorsys
 import numpy as np
 import argparse
 
-
 def sample(probs):
     s = sum(probs)
     probs = [a / s for a in probs]
@@ -21,10 +20,8 @@ def sample(probs):
             return i
     return len(probs) - 1
 
-
 def c_array(ctype, values):
     return (ctype * len(values))(*values)
-
 
 class BOX(Structure):
     _fields_ = [("x", c_float),
@@ -32,13 +29,11 @@ class BOX(Structure):
                 ("w", c_float),
                 ("h", c_float)]
 
-
 class IMAGE(Structure):
     _fields_ = [("w", c_int),
                 ("h", c_int),
                 ("c", c_int),
                 ("data", POINTER(c_float))]
-
 
 class METADATA(Structure):
     _fields_ = [("classes", c_int),
@@ -135,7 +130,6 @@ def classify(net, meta, im):
     res = sorted(res, key=lambda x: -x[1])
     return res
 
-
 def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
     im = load_image(image, 0, 0)
     boxes = make_boxes(net)
@@ -173,8 +167,6 @@ def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
     free_detections(dets, num)
     return res
 
-
-
 def detect_im(net, meta, im, thresh=.5, hier_thresh=.5, nms=.45):
     boxes = make_boxes(net)
     probs = make_probs(net)
@@ -189,7 +181,6 @@ def detect_im(net, meta, im, thresh=.5, hier_thresh=.5, nms=.45):
     free_image(im)
     free_ptrs(cast(probs, POINTER(c_void_p)), num)
     return res
-
 
 def detect_np(net, meta, np_img, thresh=.5, hier_thresh=.5, nms=.45):
     im = nparray_to_image(np_img)
@@ -212,12 +203,10 @@ def detect_np(net, meta, np_img, thresh=.5, hier_thresh=.5, nms=.45):
     free_detections(dets, num)
     return res
 
-
 def nparray_to_image(img):
     data = img.ctypes.data_as(POINTER(c_ubyte))
     image = ndarray_image(data, img.ctypes.shape, img.ctypes.strides)
     return image
-
 
 def convertBack(x, y, w, h):
     xmin = int(round(x - (w / 2)))

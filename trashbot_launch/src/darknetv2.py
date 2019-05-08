@@ -4,16 +4,20 @@ import rospkg
 from ctypes import *
 import math
 import random
+import cv2
+import colorsys
+import numpy as np
+import argparse
 
 def sample(probs):
     s = sum(probs)
-    probs = [a/s for a in probs]
+    probs = [a / s for a in probs]
     r = random.uniform(0, 1)
     for i in range(len(probs)):
         r = r - probs[i]
         if r <= 0:
             return i
-    return len(probs)-1
+    return len(probs) - 1
 
 def c_array(ctype, values):
     arr = (ctype*len(values))()
@@ -33,7 +37,6 @@ class DETECTION(Structure):
                 ("mask", POINTER(c_float)),
                 ("objectness", c_float),
                 ("sort_class", c_int)]
-
 
 class IMAGE(Structure):
     _fields_ = [("w", c_int),
@@ -65,6 +68,10 @@ set_gpu.argtypes = [c_int]
 make_image = lib.make_image
 make_image.argtypes = [c_int, c_int, c_int]
 make_image.restype = IMAGE
+
+ndarray_image = lib.ndarray_to_image
+ndarray_image.argtypes = [POINTER(c_ubyte), POINTER(c_long), POINTER(c_long)]
+ndarray_image.restype = IMAGE
 
 get_network_boxes = lib.get_network_boxes
 get_network_boxes.argtypes = [c_void_p, c_int, c_int, c_float, c_float, POINTER(c_int), c_int, POINTER(c_int)]
@@ -146,6 +153,47 @@ def detect(net, meta, image, thresh=.5, hier_thresh=.5, nms=.45):
     free_detections(dets, num)
     return res
 
+def detect_im(net, meta, im, thresh=.5, hier_thresh=.5, nms=.45):
+    boxes = make_boxes(net)
+    probs = make_probs(net)
+    num = num_boxes(net)
+    network_detect(net, im, thresh, hier_thresh, nms, boxes, probs)
+    res = []
+    for j in range(num):
+        for i in range(meta.classes):
+            if probs[j][i] > 0:
+                res.append((meta.names[i], probs[j][i], (boxes[j].x, boxes[j].y, boxes[j].w, boxes[j].h)))
+    res = sorted(res, key=lambda x: -x[1])
+    free_image(im)
+    free_ptrs(cast(probs, POINTER(c_void_p)), num)
+    return res
+
+def detect_np(net, meta, np_img, thresh=.5, hier_thresh=.5, nms=.45):
+    im = nparray_to_image(np_img)
+    num = c_int(0)
+    pnum = pointer(num)
+    predict_image(net, im)
+    dets = get_network_boxes(net, im.w, im.h, thresh, hier_thresh, None, 0, pnum)
+    num = pnum[0]
+    if (nms):
+        do_nms_obj(dets, num, meta.classes, nms)
+    
+    res = []
+    for j in range(num):
+        for i in range(meta.classes):
+            if dets[j].prob[i] > 0:
+                b = dets[j].bbox
+                res.append((meta.names[i], dets[j].prob[i], (b.x, b.y, b.w, b.h)))
+    res = sorted(res, key=lambda x: -x[1])
+    free_image(im)
+    free_detections(dets, num)
+    return res
+
+def nparray_to_image(img):
+    data = img.ctypes.data_as(POINTER(c_ubyte))
+    image = ndarray_image(data, img.ctypes.shape, img.ctypes.strides)
+    return image
+
 def convertBack(x, y, w, h):
     xmin = int(round(x - (w / 2)))
     xmax = int(round(x + (w / 2)))
@@ -153,13 +201,13 @@ def convertBack(x, y, w, h):
     ymax = int(round(y + (h / 2)))
     return xmin, ymin, xmax, ymax
     
-if __name__ == "__main__":
-    #net = load_net("cfg/densenet201.cfg", "/home/pjreddie/trained/densenet201.weights", 0)
-    #im = load_image("data/wolf.jpg", 0, 0)
-    #meta = load_meta("cfg/imagenet1k.data")
-    #r = classify(net, meta, im)
-    #print r[:10]
-    net = load_net("cfg/tiny-yolo.cfg", "tiny-yolo.weights", 0)
-    meta = load_meta("cfg/coco.data")
-    r = detect(net, meta, "data/dog.jpg")
-    print(r)
+#if __name__ == "__main__":
+#    #net = load_net("cfg/densenet201.cfg", "/home/pjreddie/trained/densenet201.weights", 0)
+#    #im = load_image("data/wolf.jpg", 0, 0)
+#    #meta = load_meta("cfg/imagenet1k.data")
+#    #r = classify(net, meta, im)
+#    #print r[:10]
+#    net = load_net("cfg/tiny-yolo.cfg", "tiny-yolo.weights", 0)
+#    meta = load_meta("cfg/coco.data")
+#    r = detect(net, meta, "data/dog.jpg")
+#    print(r)

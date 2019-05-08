@@ -18,7 +18,7 @@ import shutil
 import copy
 # import argparse
 
-from darknet import *
+from darknetv2 import *
 from yolo_ros_msgs.msg import YoloBox
 from yolo_ros_msgs.msg import YoloBoxes
 
