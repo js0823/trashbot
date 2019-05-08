@@ -66,8 +66,7 @@ class YoloDetectorNode:
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
             detect = self.darknet_detection(cv_image)
-            self.darknet_detection(cv_image)
-            if detect == True:
+            if detect and detect[0][1] > 0.7:
                 self.soundhandle.say('Trash Detected. Please pick it up.', self.voice, self.volume)
         except CvBridgeError as e:
             print(e)
@@ -112,12 +111,7 @@ class YoloDetectorNode:
         # [('trash', 0.999128812, (338.6744689, 394.390777587, 31.8570632, 85.84305572))]
         # where 'trash' is label, 0.999128812 is confidence level. Rest looks like box size.
 
-        if r == []:
-            return False
-        elif r[0][1] > 0.7:
-            return True 
-        else:
-            return False
+        return r
 
 if __name__ == "__main__":
     try:
