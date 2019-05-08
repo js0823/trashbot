@@ -84,6 +84,8 @@ class YoloDetectorNode:
         cv_image_ = copy.deepcopy(cv_image)
 
         r = detect_np(self.net, self.meta, cv_image)
+        pt1 = ()
+        pt2 = ()
         for i in r:
             x, y, w, h = i[2][0], i[2][1], i[2][2], i[2][3]
             xmin, ymin, xmax, ymax = convertBack(float(x), float(y), float(w), float(h))
@@ -112,6 +114,9 @@ class YoloDetectorNode:
 
         print('yolobox_list = {}'.format(yolobox_list))
         print('yolo_boxes = {}'.format(yolo_boxes))
+        print('r = {}'.format(r))
+        print('xmin, ymin = {}'.format(pt1))
+        print('xmax, ymax = {}'.format(pt2))
 
         # r returns [] or 
         # [('trash', 0.999128812, (338.6744689, 394.390777587, 31.8570632, 85.84305572))]
