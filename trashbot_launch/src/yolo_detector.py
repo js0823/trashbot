@@ -69,7 +69,6 @@ class YoloDetectorNode:
     def image_callback(self, data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-            cv_image = cv2.resize(cv_image, None, fx=0.5, fy=0.5)
             #self.detect = self.darknet_detection(cv_image)
             self.darknet_detection(cv_image)
             #if self.detect and self.detect[0][1] > 0.7:
