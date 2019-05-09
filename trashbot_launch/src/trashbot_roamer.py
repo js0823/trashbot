@@ -17,11 +17,13 @@ from sound_play.msg import SoundRequest
 from sound_play.libsoundplay import SoundClient
 
 PI = 3.14159265359
-yolo_detection = [0.0, 0] # [probability, box size]
-robot_pose = None
+#yolo_detection = [0.0, 0] # [probability, box size]
+robot_pose = None # robot's current position
+trash_location = [] # trash location
 
 def yolo_callback(yolo_boxes):
-    global yolo_detection
+    #global yolo_detection
+    global trash_location
     if yolo_boxes:
         s = str(yolo_boxes.yolo_boxes[0])
         stringArr = re.findall(r"[-+]?\d*\.\d+|\d+", s)
@@ -30,7 +32,9 @@ def yolo_callback(yolo_boxes):
         boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * \
                         (int(stringArr[4]) - int(stringArr[3]))
         prob = float(stringArr[0])
-        yolo_detection = [prob, boxAreaSize]
+        if prob > 0.6 and boxAreaSize > 2500:
+            if len(trash_location) == 0:
+                trash_location.append(robot_pose)
 
 def current_pos_callback(pose):
     global robot_pose
@@ -69,37 +73,30 @@ if __name__ == '__main__':
 
         # subscribe to yolo publisher
         input_topic = rospy.get_param('~input_topic', "/yolo/result")
+        # subscribe to yolo publisher
+        yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
+        # subscribe to turtlebot amcl for base_link position
+        amcl_sub = rospy.Subscriber('/amcl_pose', 
+                    PoseWithCovarianceStamped, current_pos_callback, queue_size=1)
 
         num_locations = 2
         locations = [[21.8,13.9,0.0], [5.8,13.9,0.0]]
 
         location_names = ["Collab Room Left", "Kitchen Left"]
-        x1 = y1 = x2 = y2 = x3 = y3 = x4 = y4 = 0
         start_index = 1
         goal_index = start_index
-
-        # Trash location
-        trash_location = []
 
         # Sound play
         soundHandle = SoundClient()
         voice = 'voice_kal_diphone'
         volume = 1.0
 
+        global yolo_detection
+        global robot_pose
+        global trash_location
+
         while not rospy.is_shutdown():
-            # subscribe to yolo publisher
-            yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
-            # subscribe to turtlebot amcl for base_link position
-            amcl_sub = rospy.Subscriber('/amcl_pose', 
-                                PoseWithCovarianceStamped, current_pos_callback, queue_size=1)
-            
-            # detect and add to trash location if it is
-            if yolo_detection[0] > 0.0:
-                if yolo_detection[0] > 0.6 and yolo_detection[1] > 2500:
-                    if len(trash_location) == 0: # save only one pose
-                        trash_location.append(robot_pose)
-            
-            if not trash_location: # No trash found
+            if trash_location == []: # No trash position, so roam around
                 print("Target Location : {}".format(location_names[goal_index]))
                 # Move to location
                 result = move_turtlebot(locations[goal_index][0], locations[goal_index][1],
@@ -114,7 +111,7 @@ if __name__ == '__main__':
                 goal_index += 1
                 if goal_index >= num_locations:
                     goal_index = 0
-            else: # trash found. Go here first.
+            else: # trash found while navigating.
                 print("Going to trash.")
                 # Move to location
                 result = move_turtlebot(trash_location[0][0], trash_location[0][1], 
@@ -126,8 +123,16 @@ if __name__ == '__main__':
                 if result:
                     rospy.loginfo("Going to trash: done.")
                 rospy.sleep(10)
+                # Make a sound
+                soundHandle.say('Trash Detected. Please pick it up.', 
+                                            voice, volume)
                 # Remove trash location
                 trash_location[:] = []
+            
+            # detect and add to trash location if it is
+            #if yolo_detection[0] > 0.6 and yolo_detection[1] > 2500:
+            #    if len(trash_location) == 0: # save only one trash pose
+            #        trash_location.append(robot_pose)
             
     except rospy.ROSInternalException:
         rospy.loginfo("Roamer finished.")
