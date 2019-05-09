@@ -96,9 +96,11 @@ if __name__ == '__main__':
                                 PoseWithCovarianceStamped, current_pos_callback, queue_size=1)
             
             # detect and add to trash location if it is
-            if yolo_detection[0] > 0.7 and yolo_detection[1] > 2500 and not trash_location:
-                trash_location.append(robot_pose)
-            print(robot_pose)
+            if yolo_detection is not None:
+                if yolo_detection[0] > 0.7 and yolo_detection[1] > 2500:
+                    if 0 < len(trash_location) <= 1: # save only one pose
+                        trash_location.append(robot_pose)
+            print(trash_location)
 
             '''
             # If trash is found, add the location
