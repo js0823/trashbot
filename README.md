@@ -5,6 +5,7 @@ Using Baymax 7
 
 ## TODO
 1. YOLO is very slow on turtlebot laptops (can't do much about it?)
+  - Check size of cv_image and test if resizing to smaller will help.
 2. Moving close to trash using pointcloud/depthcloud.
 
 ## Environments

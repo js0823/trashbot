@@ -24,8 +24,8 @@ from yolo_ros_msgs.msg import YoloBox
 from yolo_ros_msgs.msg import YoloBoxes
 
 # sound_play
-from sound_play.msg import SoundRequest
-from sound_play.libsoundplay import SoundClient
+#from sound_play.msg import SoundRequest
+#from sound_play.libsoundplay import SoundClient
 
 class YoloDetectorNode:
     def __init__(self):
@@ -57,21 +57,24 @@ class YoloDetectorNode:
         self.color = (0,255,0)
 
         # sound_play
-        self.soundhandle = SoundClient()
-        self.voice = 'voice_kal_diphone'
-        self.volume = 1.0
+        #self.soundhandle = SoundClient()
+        #self.voice = 'voice_kal_diphone'
+        #self.volume = 1.0
         
-        # detection initialized
-        self.detect = []
+        # for returning detected objects
+        #self.detect = []
 
         rospy.loginfo("Initialized yolo_detector_node")
 
     def image_callback(self, data):
         try:
             cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
-            self.detect = self.darknet_detection(cv_image)
-            if self.detect and self.detect[0][1] > 0.5:
-                self.soundhandle.say('Trash Detected. Please pick it up.', self.voice, self.volume)
+            height, width, channel = cv_image.shape
+            print(height, width, channel)
+            #self.detect = self.darknet_detection(cv_image)
+            self.darknet_detection(cv_image)
+            #if self.detect and self.detect[0][1] > 0.7:
+            #    self.soundhandle.say('Trash Detected. Please pick it up.', self.voice, self.volume)
         except CvBridgeError as e:
             print(e)
 
@@ -85,8 +88,6 @@ class YoloDetectorNode:
         cv_image_ = copy.deepcopy(cv_image)
 
         r = detect_np(self.net, self.meta, cv_image)
-        pt1 = ()
-        pt2 = ()
         for i in r:
             x, y, w, h = i[2][0], i[2][1], i[2][2], i[2][3]
             xmin, ymin, xmax, ymax = convertBack(float(x), float(y), float(w), float(h))
@@ -119,9 +120,6 @@ class YoloDetectorNode:
         # xmax: 326
         # ymin: 324
         # ymax: 406
-        s = str(yolo_boxes.yolo_boxes[0])
-        ss = re.findall(r"[-+]?\d*\.\d+|\d+", s)
-        # ss = ['0.9996', '300', '326', '324', '406']
 
         # r returns [] or 
         # [('trash', 0.9996, (312.81, 365.2218, 26.248, 81.764))]
