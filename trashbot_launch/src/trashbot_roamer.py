@@ -27,7 +27,7 @@ def yolo_callback(yolo_boxes):
         # bounding box pixel area size = (xmax - xmin) * (ymax - ymin)
         boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * (int(stringArr[4] - int(stringArr[3])))
         prob = float(stringArr[0])
-        return prob, boxAreaSize
+        return [prob, boxAreaSize]
 
 def move_turtlebot(x, y, yaw):
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
@@ -81,8 +81,10 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             # subscribe to yolo publisher
             yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
-
-            # If trash is found and trash_location is empty, add the location
+            print(yolo_sub)
+            print(type(yolo_sub)
+'''
+            # If trash is found, add the location
             if yolo_sub > 0 and not trash_location:
                 trash_location.append(yolo_sub)
 
@@ -115,6 +117,6 @@ if __name__ == '__main__':
                 rospy.sleep(10)
                 # Remove trash location
                 trash_location[:] = []
-
+'''
     except rospy.ROSInternalException:
         rospy.loginfo("Roamer finished.")
