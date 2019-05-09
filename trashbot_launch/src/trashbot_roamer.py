@@ -25,7 +25,7 @@ def yolo_callback(yolo_boxes):
         stringArr = re.findall(r"[-+]?\d*\.\d+|\d+", s)
         # stringArr = ['0.9996', '300', '326', '324', '406']
         # bounding box pixel area size = (xmax - xmin) * (ymax - ymin)
-        boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * 
+        boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * \
                         (int(stringArr[4]) - int(stringArr[3]))
         prob = float(stringArr[0])
         return [prob, boxAreaSize]
