@@ -17,14 +17,12 @@ from sound_play.msg import SoundRequest
 from sound_play.libsoundplay import SoundClient
 
 PI = 3.14159265359
-yolo_detection = None
+yolo_detection = [0.0, 0] # [probability, box size]
 robot_pose = None
 
 def yolo_callback(yolo_boxes):
     global yolo_detection
-    if not yolo_boxes:
-        return 0
-    else:
+    if yolo_boxes:
         s = str(yolo_boxes.yolo_boxes[0])
         stringArr = re.findall(r"[-+]?\d*\.\d+|\d+", s)
         # stringArr = ['0.9996', '300', '326', '324', '406']
@@ -96,11 +94,11 @@ if __name__ == '__main__':
                                 PoseWithCovarianceStamped, current_pos_callback, queue_size=1)
             
             # detect and add to trash location if it is
-            if yolo_detection is not None:
-                if yolo_detection[0] > 0.7 and yolo_detection[1] > 2500:
-                    if 0 < len(trash_location) <= 1: # save only one pose
+            if yolo_detection[0] > 0.0:
+                if yolo_detection[0] > 0.6 and yolo_detection[1] > 2500:
+                    if len(trash_location) == 0: # save only one pose
                         trash_location.append(robot_pose)
-            print(trash_location)
+            print(yolo_detection, trash_location)
 
             '''
             # If trash is found, add the location
