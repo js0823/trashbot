@@ -4,6 +4,7 @@ import rospy
 import actionlib
 import tf
 import geometry_msgs.msg
+from geometry_msgs.msg import PoseWithCovarianceStamped
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 import tf_conversions
 import yolo_detector
@@ -17,8 +18,10 @@ from sound_play.libsoundplay import SoundClient
 
 PI = 3.14159265359
 yolo_detection = None
+robot_pose = None
 
 def yolo_callback(yolo_boxes):
+    global yolo_detection
     if not yolo_boxes:
         return 0
     else:
@@ -29,8 +32,11 @@ def yolo_callback(yolo_boxes):
         boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * \
                         (int(stringArr[4]) - int(stringArr[3]))
         prob = float(stringArr[0])
-        global yolo_detection
         yolo_detection = [prob, boxAreaSize]
+
+def current_pos_callback(pose):
+    global robot_pose
+    robot_pose = pose.pose
 
 def move_turtlebot(x, y, yaw):
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
@@ -46,7 +52,7 @@ def move_turtlebot(x, y, yaw):
     goal.target_pose.pose.position.z = 0.0
 
     goal.target_pose.pose.orientation = geometry_msgs.msg.Quaternion(
-                                *tf_conversions.transformations.quaternion_from_euler(0, 0, yaw))
+                    *tf_conversions.transformations.quaternion_from_euler(0, 0, yaw))
 
     client.send_goal(goal)
     wait = client.wait_for_result()
@@ -62,8 +68,6 @@ if __name__ == '__main__':
 
         # subscribe to yolo publisher
         input_topic = rospy.get_param('~input_topic', "/yolo/result")
-
-        home_location = [5.65, 13.8, 0.0]
 
         num_locations = 2
         locations = [[21.8,13.9,0.0], [5.8,13.9,0.0]]
@@ -84,7 +88,13 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             # subscribe to yolo publisher
             yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
-            print(yolo_detection)
+            # subscribe to turtlebot amcl for base_link position
+            amcl_sub = rospy.Subscriber('/amcl_pose', 
+                                PoseWithCovarianceStamped, current_pos_callback, queue_size=1)
+            
+            print(robot_pose)
+            # detect and add to trash location if it is
+            #if yolo_detection[0] > 0.7 and yolo_detection[1] > 2500:
 
             '''
             # If trash is found, add the location
