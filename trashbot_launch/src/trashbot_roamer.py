@@ -82,8 +82,8 @@ if __name__ == '__main__':
             # subscribe to yolo publisher
             yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
             print(yolo_sub)
-            print(type(yolo_sub)
-'''
+            print(type(yolo_sub))
+            '''
             # If trash is found, add the location
             if yolo_sub > 0 and not trash_location:
                 trash_location.append(yolo_sub)
@@ -117,6 +117,7 @@ if __name__ == '__main__':
                 rospy.sleep(10)
                 # Remove trash location
                 trash_location[:] = []
-'''
+            '''
+            
     except rospy.ROSInternalException:
         rospy.loginfo("Roamer finished.")
