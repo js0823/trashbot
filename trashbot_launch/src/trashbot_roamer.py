@@ -36,7 +36,10 @@ def yolo_callback(yolo_boxes):
 
 def current_pos_callback(pose):
     global robot_pose
-    robot_pose = pose.pose
+    x = pose.pose.pose.position.x
+    y = pose.pose.pose.position.y
+    z = 0.0
+    robot_pose = [x, y, z]
 
 def move_turtlebot(x, y, yaw):
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
@@ -92,9 +95,8 @@ if __name__ == '__main__':
             amcl_sub = rospy.Subscriber('/amcl_pose', 
                                 PoseWithCovarianceStamped, current_pos_callback, queue_size=1)
             
-            print(robot_pose)
             # detect and add to trash location if it is
-            #if yolo_detection[0] > 0.7 and yolo_detection[1] > 2500:
+            if yolo_detection[0] > 0.7 and yolo_detection[1] > 2500:
 
             '''
             # If trash is found, add the location
