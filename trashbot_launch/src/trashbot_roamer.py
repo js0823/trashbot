@@ -82,8 +82,8 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             # subscribe to yolo publisher
             yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
-            print(yolo_sub)
-            print(type(yolo_sub))
+            print(yolo_sub[0])
+            print(yolo_sub[1])
             '''
             # If trash is found, add the location
             if yolo_sub > 0 and not trash_location:

@@ -126,7 +126,7 @@ class YoloDetectorNode:
         # pt2 = xmax, ymax = (326, 406)
         # yolo_boxes = label: trash, probability: 0.9996, 300, 326, 324, 406 ...
 
-        return r
+        #return r
 
 if __name__ == "__main__":
     try:
