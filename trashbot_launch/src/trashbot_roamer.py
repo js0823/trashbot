@@ -16,6 +16,7 @@ from sound_play.msg import SoundRequest
 from sound_play.libsoundplay import SoundClient
 
 PI = 3.14159265359
+yolo_detection = None
 
 def yolo_callback(yolo_boxes):
     if not yolo_boxes:
@@ -28,7 +29,8 @@ def yolo_callback(yolo_boxes):
         boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * \
                         (int(stringArr[4]) - int(stringArr[3]))
         prob = float(stringArr[0])
-        return [prob, boxAreaSize]
+        global yolo_detection
+        yolo_detection = [prob, boxAreaSize]
 
 def move_turtlebot(x, y, yaw):
     client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
@@ -82,8 +84,8 @@ if __name__ == '__main__':
         while not rospy.is_shutdown():
             # subscribe to yolo publisher
             yolo_sub = rospy.Subscriber(input_topic, YoloBoxes, yolo_callback, queue_size=1)
-            print(yolo_sub[0])
-            print(yolo_sub[1])
+            print(yolo_detection)
+
             '''
             # If trash is found, add the location
             if yolo_sub > 0 and not trash_location:
