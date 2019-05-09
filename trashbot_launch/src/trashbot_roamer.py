@@ -98,13 +98,7 @@ if __name__ == '__main__':
                 if yolo_detection[0] > 0.6 and yolo_detection[1] > 2500:
                     if len(trash_location) == 0: # save only one pose
                         trash_location.append(robot_pose)
-            print(yolo_detection, trash_location)
-
-            '''
-            # If trash is found, add the location
-            if yolo_sub > 0 and not trash_location:
-                trash_location.append(yolo_sub)
-
+            
             if not trash_location: # No trash found
                 print("Target Location : {}".format(location_names[goal_index]))
                 # Move to location
@@ -134,7 +128,6 @@ if __name__ == '__main__':
                 rospy.sleep(10)
                 # Remove trash location
                 trash_location[:] = []
-            '''
             
     except rospy.ROSInternalException:
         rospy.loginfo("Roamer finished.")
