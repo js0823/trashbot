@@ -51,12 +51,15 @@ Note: If error Out of memory occurs then in .cfg-file you should increase subdiv
 ## Package Installation
 1. Build darknet by going into darknet and typing "make -j #" where # is the number of CPU.
 2. Run catkin_make from the ROS workspace to build Trashbot.
-3. Make sure devel.bash is sourced.
-4. Run "roslaunch trashbot_launch trashbot.launch"
-5. Run "roslaunch amcl_navigation.launch"
-6. Run "roslaunch yolo_detector.launch"
-7. Go to the RVIZ window and wait until YOLO shows video streaming at the bottom left.
-8. Run "roslaunch trashbot_roamer.launch"
+
+## Running the package
+1. Make sure devel.bash is sourced.
+2. Run "roslaunch trashbot_launch trashbot.launch"
+3. Run "roslaunch trashbot_launch amcl_navigation.launch"
+4. Make sure Turtlebot is localized on RViz.
+5. Run "roslaunch trashbot_launch yolo_detector.launch"
+6. Go to the RVIZ window and wait until YOLO shows video streaming at the bottom left.
+7. Run "roslaunch trashbot_roamer.launch"
 
 ## Other comments
 - amcl_navigation.launch reports warning about Costmap2DROS transform timeout. This looks like time synchronization issue, and it plagues the navigation. It seems to be laptop performance issue.
