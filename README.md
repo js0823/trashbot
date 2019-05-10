@@ -10,10 +10,13 @@ NOTE: I used Using Baymax 7. All software are installed on Baymax 7 Turtlebot fo
 - GPU Environment
   - While I didn't have a GPU testing environment, GPU is highly recommended due to computation required for YOLO to run smoothly. If you have GPU, I recommend using it. To use GPU, install CUDA and CUDNN.
 - ROS-kinetic
-  - This package depends on ROS. Please install ros-kinetic-desktop-full, along with 
+  - This package depends on ROS. Please install ros-kinetic-desktop-full.
+  - These packages may be required to install: sudo apt install ros-kinetic-turtlebot ros-kinetic-turtlebot-rviz-launchers ros-kinetic-turtlebot-navigation ros-kinetic-move-base
 - Python 2
   - Python 2 is required as it is standard for ROS.
   - Numpy is required for dependency.
+  - I had issue where em couldn't be found. In this case, run "pip install empy".
+  - Although not required, it may be good to install "pip install catkin_tools".
 - OpenCV
   - OpenCV is required to run this package. Please refer to OpenCV section below if installation is an issue.
 - Darknet
@@ -56,11 +59,4 @@ Note: If error Out of memory occurs then in .cfg-file you should increase subdiv
 8. Run "roslaunch trashbot_roamer.launch"
 
 ## Other comments
-1. When building Tufts turtlebot from source, it gets error message saying "move_base_msgs" is not found. Run ros-kinetic-move-base in this case.
-2. When building Tufts turtlebot from source, it gets error message "could not find em". Run "pip install empy".
-3. Install catkin command by "pip install catkin_tools"
-4. To record video, follow https://learn.turtlebot.com/2015/02/04/4/
-5. Must manually install turtlebot via "sudo apt install ros-kinetic-turtlebot"
-6. Must manually install turtlebot rviz launchers via "sudo apt install ros-kinetic-turtlebot-rviz-launchers"
-7. Must manually install turtlebot navigation via "sudo apt install ros-kinetic-turtlebot-navigation"
-8. amcl_navigation.launch reports warning about Costmap2DROS transform timeout. This looks like time synchronization issue, and it plagues the navigation. It seems to be laptop performance issue.
+- amcl_navigation.launch reports warning about Costmap2DROS transform timeout. This looks like time synchronization issue, and it plagues the navigation. It seems to be laptop performance issue.
