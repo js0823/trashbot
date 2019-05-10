@@ -17,14 +17,12 @@ from sound_play.msg import SoundRequest
 from sound_play.libsoundplay import SoundClient
 
 PI = 3.14159265359
-#yolo_detection = [0.0, 0] # [probability, box size]
 robot_pose = None # robot's current position
 trash_location = [] # trash location
 
 def yolo_callback(yolo_boxes):
-    #global yolo_detection
     global trash_location
-    if yolo_boxes:
+    if yolo_boxes.yolo_boxes != []:
         s = str(yolo_boxes.yolo_boxes[0])
         stringArr = re.findall(r"[-+]?\d*\.\d+|\d+", s)
         # stringArr = ['0.9996', '300', '326', '324', '406']
@@ -32,9 +30,10 @@ def yolo_callback(yolo_boxes):
         boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * \
                         (int(stringArr[4]) - int(stringArr[3]))
         prob = float(stringArr[0])
-        if prob > 0.6 and boxAreaSize > 2500:
+        if prob > 0.5 and boxAreaSize > 100:
             if len(trash_location) == 0:
                 trash_location.append(robot_pose)
+                print(trash_location)
 
 def current_pos_callback(pose):
     global robot_pose
@@ -69,6 +68,8 @@ def move_turtlebot(x, y, yaw):
 
 if __name__ == '__main__':
     try:
+        global trash_location
+        global robot_pose
         rospy.init_node('trashbot_roamer_py')
 
         # subscribe to yolo publisher
@@ -91,12 +92,8 @@ if __name__ == '__main__':
         voice = 'voice_kal_diphone'
         volume = 1.0
 
-        global yolo_detection
-        global robot_pose
-        global trash_location
-
         while not rospy.is_shutdown():
-            if trash_location == []: # No trash position, so roam around
+            if len(trash_location) == 0: # No trash position, so roam around
                 print("Target Location : {}".format(location_names[goal_index]))
                 # Move to location
                 result = move_turtlebot(locations[goal_index][0], locations[goal_index][1],

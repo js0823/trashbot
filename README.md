@@ -65,3 +65,4 @@ Note: I should merge trashbot_roamer and yolo_detector into one file.
 5. Must manually install turtlebot via "sudo apt install ros-kinetic-turtlebot"
 6. Must manually install turtlebot rviz launchers via "sudo apt install ros-kinetic-turtlebot-rviz-launchers"
 7. Must manually install turtlebot navigation via "sudo apt install ros-kinetic-turtlebot-navigation"
+8. amcl_navigation.launch reports warning about Costmap2DROS transform timeout. This looks like time synchronization issue, and it plagues the navigation. It seems to be laptop performance issue.
