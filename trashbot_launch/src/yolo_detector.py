@@ -17,15 +17,10 @@ import numpy as np
 import os
 import shutil
 import copy
-# import argparse
 
 from darknetv2 import *
 from yolo_ros_msgs.msg import YoloBox
 from yolo_ros_msgs.msg import YoloBoxes
-
-# sound_play
-#from sound_play.msg import SoundRequest
-#from sound_play.libsoundplay import SoundClient
 
 class YoloDetectorNode:
     def __init__(self):

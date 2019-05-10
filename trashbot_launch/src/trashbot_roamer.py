@@ -80,10 +80,11 @@ if __name__ == '__main__':
         amcl_sub = rospy.Subscriber('/amcl_pose', 
                     PoseWithCovarianceStamped, current_pos_callback, queue_size=1)
 
-        num_locations = 2
-        locations = [[21.8,13.9,0.0], [5.8,13.9,0.0]]
+        num_locations = 5
+        locations = [[21.8,13.9,0.0], [17.8,13.9,0.0], [13.8,13.9,0.0], [9.8,13.9,0.0], [5.8,13.9,0.0]]
 
-        location_names = ["Collab Room Left", "Kitchen Left"]
+        location_names = ["Collab Room Left", "Close to Collab Room Left", "Midpoint", 
+                            "Close to Kitchen Left", "Kitchen Left"]
         start_index = 1
         goal_index = start_index
 
@@ -99,9 +100,10 @@ if __name__ == '__main__':
                 result = move_turtlebot(locations[goal_index][0], locations[goal_index][1],
                                         locations[goal_index][2])
                 # Rotate around
-                for p in range(3):
-                    result = move_turtlebot(locations[goal_index][0], locations[goal_index][1], 
-                                            locations[goal_index][2] + (p + 1) * PI / 2)
+                if goal_index == 0 or goal_index == num_locations - 1:
+                    for p in range(3):
+                        result = move_turtlebot(locations[goal_index][0], locations[goal_index][1], 
+                                                locations[goal_index][2] + (p + 1) * PI / 2)
                 if result:
                     rospy.loginfo("Goal execution done.")
                 rospy.sleep(2)
@@ -119,17 +121,12 @@ if __name__ == '__main__':
                                             trash_location[0][2] + (p + 1) * PI / 2)
                 if result:
                     rospy.loginfo("Going to trash: done.")
-                rospy.sleep(2)
                 # Make a sound
                 soundHandle.say('Trash Detected. Please pick it up.', 
                                             voice, volume)
+                rospy.sleep(5)
                 # Remove trash location
                 trash_location[:] = []
-            
-            # detect and add to trash location if it is
-            #if yolo_detection[0] > 0.6 and yolo_detection[1] > 2500:
-            #    if len(trash_location) == 0: # save only one trash pose
-            #        trash_location.append(robot_pose)
             
     except rospy.ROSInternalException:
         rospy.loginfo("Roamer finished.")

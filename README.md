@@ -1,24 +1,18 @@
 # Trashbot: Environmentally Friendly Robot
 Trashbot Project for COMP150: Probabilistic Robotics
 
-Using Baymax 7
-
-## TODO
-1. YOLO is very slow on turtlebot laptops (can't do much about it?)
-  - Check size of cv_image and test if resizing to smaller will help.
-2. Moving close to trash using pointcloud/depthcloud.
+NOTE: I used Using Baymax 7. All software are installed on Baymax 7 Turtlebot for testing.
 
 ## Environments
+GPU Environment
+While I didn't have a GPU testing environment, GPU is highly recommended due to computation required for YOLO to run smoothly. If you have GPU, I recommend using it. To use GPU, install CUDA and CUDNN.
+
 Deep learning Environment
   - Package dependencies:
-    - tensorflow 1.12.0
-    - opencv 3.4.2
+    - ROS's opencv, or build OpenCV 3.4.x from source.
     - numpy
-    - matplotlib
-    - seaborn
-    - pillow
 
-Building opencv 3.4.6 using Python 3 and virtual environment
+Building opencv 3.4.x using Python 3 and virtual environment
 1. Install following packages using "sudo apt install"
   - build-essential cmake unzip pkg-config liblapacke-dev libjpeg-dev libpng-dev libtiff-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libxvidcore-dev libx264-dev libgtk-3-dev libatlas-base-dev gfortran libtiff5-dev libjasper-dev libpng12-dev libhdf5-serial-dev graphviz libopenblas-dev python-tk python3-tk python-imaging-tk
 2. Turn on the following options when running ccmake
@@ -28,10 +22,6 @@ Building opencv 3.4.6 using Python 3 and virtual environment
 
 More information are here.
 https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
-
-## Training Dataset
-Dataset from trashbot.
-I will be testing plastic, paper, and metal first, then expand if I have time.
 
 ## darknet
 - On Geforce 1060 6GB, darknet fails when using, for example, yolov3.weights with COCO dataset pretrained on dog.jpg. The author of darknet says "Note: if error Out of memory occurs then in .cfg-file you should increase subdivisions=16, 32 or 64". This works well.
@@ -47,15 +37,13 @@ To make this work nicely on ubuntu, check the following.
 4. Change Makefile so that GPU=1, CUDNN=1, OPENCV=1, and OPENMP=1.
 
 ## Running the whole thing
-1. Build darknet.
-2. catkin_make the trashbot.
+1. Build darknet by going into darknet and typing "make -j 2".
+2. Run catkin_make from the ROS workspace to build Trashbot.
 3. Make sure devel.bash is sourced.
-4. Run "roslaunch trashbot_launch trashbot_lidar.launch"
+4. Run "roslaunch trashbot_launch trashbot.launch"
 5. Run "roslaunch amcl_navigation.launch"
-6. Run "roslaunch trashbot_roamer.launch"
-7. Run "roslaunch yolo_detector.launch"
-
-Note: I should merge trashbot_roamer and yolo_detector into one file.
+6. Run "roslaunch yolo_detector.launch"
+7. Run "roslaunch trashbot_roamer.launch"
 
 ## Other comments
 1. When building Tufts turtlebot from source, it gets error message saying "move_base_msgs" is not found. Run ros-kinetic-move-base in this case.
