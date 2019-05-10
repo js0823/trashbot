@@ -104,7 +104,7 @@ if __name__ == '__main__':
                                             locations[goal_index][2] + (p + 1) * PI / 2)
                 if result:
                     rospy.loginfo("Goal execution done.")
-                rospy.sleep(10)
+                rospy.sleep(2)
                 goal_index += 1
                 if goal_index >= num_locations:
                     goal_index = 0
@@ -119,7 +119,7 @@ if __name__ == '__main__':
                                             trash_location[0][2] + (p + 1) * PI / 2)
                 if result:
                     rospy.loginfo("Going to trash: done.")
-                rospy.sleep(10)
+                rospy.sleep(2)
                 # Make a sound
                 soundHandle.say('Trash Detected. Please pick it up.', 
                                             voice, volume)
