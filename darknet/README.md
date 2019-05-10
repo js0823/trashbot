@@ -1,5 +1,5 @@
 This is code taken from https://github.com/pjreddie/darknet.
-I did not write this code and no credits goes towards me on this code. -Jongseo Yoon
+I edited few parts but did not write this code and no credits goes towards me on this code. -Jongseo Yoon
 
 ![Darknet Logo](http://pjreddie.com/media/files/darknet-black-small.png)
 
