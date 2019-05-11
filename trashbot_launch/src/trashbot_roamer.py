@@ -30,7 +30,7 @@ def yolo_callback(yolo_boxes):
         boxAreaSize = (int(stringArr[2]) - int(stringArr[1])) * \
                         (int(stringArr[4]) - int(stringArr[3]))
         prob = float(stringArr[0])
-        if prob > 0.5 and boxAreaSize > 1000:
+        if prob > 0.6 and boxAreaSize > 1000:
             if len(trash_location) == 0:
                 trash_location.append(robot_pose)
                 print(trash_location)
