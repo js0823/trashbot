@@ -2,6 +2,7 @@
 Trashbot Project for COMP150: Probabilistic Robotics
 
 NOTE1: I used Using Baymax 7 Turtlebot. All software are installed on Baymax 7 Turtlebot for testing.
+
 NOTE2: I trained using Red Bull can only. Adding more objects to be trained in the future will be ideal.
 
 ## Environments (Tested only on Ubuntu)
