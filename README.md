@@ -1,7 +1,7 @@
 # Trashbot: Environmentally Friendly Robot
 Trashbot Project for COMP150: Probabilistic Robotics
 
-NOTE1: I used Using Baymax 7. All software are installed on Baymax 7 Turtlebot for testing.
+NOTE1: I used Using Baymax 7 Turtlebot. All software are installed on Baymax 7 Turtlebot for testing.
 NOTE2: I trained using Red Bull can only. Adding more objects to be trained in the future will be ideal.
 
 ## Environments (Tested only on Ubuntu)
@@ -63,4 +63,4 @@ Note: If error Out of memory occurs then in .cfg-file you should increase subdiv
 7. Run "roslaunch trashbot_roamer.launch"
 
 ## Other comments
-- amcl_navigation.launch reports warning about Costmap2DROS transform timeout. This looks like time synchronization issue, and it plagues the navigation. It seems to be laptop performance issue.
+- amcl_navigation.launch reports warning about Costmap2DROS transform timeout. This looks like time synchronization issue, and it plagues the navigation. It seems to be laptop performance issue. I fixed this temporarily by increasing the error threshold value to 100.0, but this is not a solution.
